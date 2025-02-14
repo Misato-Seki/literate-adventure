@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "NEXT_PRIVATE_TURBOPACK=0 next dev",
+    "build": "NEXT_PRIVATE_TURBOPACK=0 next build",
+    "start": "NEXT_PRIVATE_TURBOPACK=0 next start",
+    "lint": "NEXT_PRIVATE_TURBOPACK=0 next lint"
   },
   "dependencies": {
     "@payloadcms/db-mongodb": "^3.23.0",
