@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.textInput {
+  @apply bg-white border border-black rounded p-2;
+}
+
 /* :root {
   --background: #ffffff;
   --foreground: #171717;
