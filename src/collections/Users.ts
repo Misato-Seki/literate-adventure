@@ -9,7 +9,6 @@ export const Users: CollectionConfig = {
   access: {
     read: ({ req }) => req.user && req.user.role === 'admin',
     create: ({ req }) => req.user && req.user.role === 'admin',
-    // create: () => true,
     update: ({ req }) => req.user && req.user.role === 'admin',
     delete: ({ req }) => req.user && req.user.role === 'admin',
   },
@@ -25,6 +24,6 @@ export const Users: CollectionConfig = {
         { label: "Moderator", value: "moderator" },
         { label: "Editor", value: "editor" },
       ]
-    }
+    },
   ],
 }

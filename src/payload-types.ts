@@ -67,8 +67,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    posts: Post;
-    pages: Page;
+    news: News;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,8 +76,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    posts: PostsSelect<false> | PostsSelect<true>;
-    pages: PagesSelect<false> | PagesSelect<true>;
+    news: NewsSelect<false> | NewsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -154,41 +152,14 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "news".
  */
-export interface Post {
-  id: string;
-  title: string;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  author?: (string | null) | User;
-  publishedDate?: string | null;
-  status?: ('draft' | 'published') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
+export interface News {
   id: string;
   title: string;
   slug: string;
-  content?: {
+  thumbnail?: (string | null) | Media;
+  text: {
     root: {
       type: string;
       children: {
@@ -202,14 +173,11 @@ export interface Page {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
-  publishedDate?: string | null;
-  status?: ('draft' | 'published') | null;
-  featuredImage?: (string | null) | Media;
-  meta?: {
-    description?: string | null;
-    keywords?: string | null;
   };
+  author: string;
+  status: 'draft' | 'pending' | 'published';
+  publishedDate: string;
+  tag?: ('tech' | 'culture' | 'politics')[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -229,12 +197,8 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'posts';
-        value: string | Post;
-      } | null)
-    | ({
-        relationTo: 'pages';
-        value: string | Page;
+        relationTo: 'news';
+        value: string | News;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -314,34 +278,17 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts_select".
+ * via the `definition` "news_select".
  */
-export interface PostsSelect<T extends boolean = true> {
-  title?: T;
-  content?: T;
-  author?: T;
-  publishedDate?: T;
-  status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
- */
-export interface PagesSelect<T extends boolean = true> {
+export interface NewsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  content?: T;
-  publishedDate?: T;
+  thumbnail?: T;
+  text?: T;
+  author?: T;
   status?: T;
-  featuredImage?: T;
-  meta?:
-    | T
-    | {
-        description?: T;
-        keywords?: T;
-      };
+  publishedDate?: T;
+  tag?: T;
   updatedAt?: T;
   createdAt?: T;
 }

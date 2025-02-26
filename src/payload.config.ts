@@ -9,14 +9,15 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Posts } from './collections/Posts'
-import { Pages } from './collections/Pages'
+import { News } from './collections/News'
 
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
+  cors: '*',
   admin: {
     user: Users.slug,
     importMap: {
@@ -26,8 +27,7 @@ export default buildConfig({
   collections: [
     Users, 
     Media,
-    Posts,
-    Pages,
+    News,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
