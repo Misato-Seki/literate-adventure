@@ -175,6 +175,7 @@ export interface News {
     [k: string]: unknown;
   };
   author: string;
+  role: string;
   status: 'draft' | 'pending' | 'published';
   publishedDate: string;
   tag?: ('tech' | 'culture' | 'politics')[] | null;
@@ -286,6 +287,7 @@ export interface NewsSelect<T extends boolean = true> {
   thumbnail?: T;
   text?: T;
   author?: T;
+  role?: T;
   status?: T;
   publishedDate?: T;
   tag?: T;

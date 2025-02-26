@@ -8,11 +8,16 @@ export const News: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title', // 管理画面でのタイトルに `title` フィールドを使用
-    defaultColumns: ['title', 'author', 'status', 'publishedDate', 'requireApproval'], // デフォルトで表示するカラム
-    listSearchableFields: ['title', 'author', 'status', 'publishedDate', 'requireApproval'], // 検索対象のフィールド
+    defaultColumns: ['title', 'author', 'role', 'status', 'publishedDate', 'tag'], // デフォルトで表示するカラム
+    listSearchableFields: ['title', 'author', 'role', 'status', 'publishedDate', 'tag'], // 検索対象のフィールド
   },
   access: {
-    read: () => true, // All users
+    // read: ({ req, data}) => {
+    //   if(!req.user) return false;
+    //   if(req.user.role === 'admin' || req.user.role === "moderator") return true;
+    //   if(req.user.role === 'editor') return data?.author === req.user.email; // Only own article
+    //   return false
+    // },
     create: ({ req }) => !!req.user, // 認証済みユーザーのみ作成可能
     update: ({ req, data }) => {
       if(!req.user) return false;
@@ -23,7 +28,7 @@ export const News: CollectionConfig = {
     delete: ({ req }) => {
       if(req.user && (req.user.role === 'admin' || req.user.role === 'moderator')) return true;
       return false // 認証済みユーザーのみ削除可能
-    },
+    }, 
   },
   fields: [
     {
@@ -53,6 +58,14 @@ export const News: CollectionConfig = {
     },
     {
       name: 'author',
+      type: 'text',
+      admin: {
+        hidden: true,
+      },
+      required: true,
+    },
+    {
+      name: 'role',
       type: 'text',
       admin: {
         hidden: true,
@@ -103,12 +116,16 @@ export const News: CollectionConfig = {
     beforeChange: [
       ({ req, data }) => {
         if(req.user) {
-          const updatedData: {author?: string; publishedDate?: Date} = {
+          const updatedData: {author?: string; publishedDate?: Date; role?: string} = {
             ...data
           }
 
           if(!data.author) {
             updatedData.author = req.user.email
+          }
+
+          if(!data.role) {
+            updatedData.role = req.user.role
           }
 
           if(data.status === 'published' && !data.publishedDate) {
@@ -118,6 +135,7 @@ export const News: CollectionConfig = {
         }
         return data
       }
-    ]
+    ],
+    
   },
 }
